@@ -204,8 +204,11 @@
      * @param {Event} e Event object fired on mousemove
      */
     _onMouseMove: function (e) {
-      !this.allowTouchScrolling && e.preventDefault && e.preventDefault();
-      this.__onMouseMove(e);
+      var touchDrag = this.allowTouchScrolling && e.touches && e.touches.length > 1;
+      if (!touchDrag) {
+        e.preventDefault && e.preventDefault();
+        this.__onMouseMove(e);
+      }
     },
 
     /**

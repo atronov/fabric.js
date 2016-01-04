@@ -441,7 +441,7 @@ fabric.Collection = {
           rx = vector.x * cos - vector.y * sin,
           ry = vector.x * sin + vector.y * cos;
       return {
-        x: rx, 
+        x: rx,
         y: ry
       };
     },
@@ -6986,7 +6986,7 @@ fabric.Pattern = fabric.util.createClass(/** @lends fabric.Pattern.prototype */ 
      * @param {Number} [options.viewBox.width] Width of viewbox
      * @param {Number} [options.viewBox.height] Height of viewbox
      * @param {String} [options.encoding=UTF-8] Encoding of SVG output
-     * @param {String} [options.width] desired width of svg with or without units 
+     * @param {String} [options.width] desired width of svg with or without units
      * @param {String} [options.height] desired height of svg with or without units
      * @param {Function} [reviver] Method for further parsing of svg elements, called after each fabric object converted into svg representation.
      * @return {String} SVG string
@@ -9602,8 +9602,11 @@ fabric.PatternBrush = fabric.util.createClass(fabric.PencilBrush, /** @lends fab
      * @param {Event} e Event object fired on mousemove
      */
     _onMouseMove: function (e) {
-      !this.allowTouchScrolling && e.preventDefault && e.preventDefault();
-      this.__onMouseMove(e);
+      var touchDrag = this.allowTouchScrolling && e.touches && e.touches.length > 1;
+      if (!touchDrag) {
+        e.preventDefault && e.preventDefault();
+        this.__onMouseMove(e);
+      }
     },
 
     /**
@@ -20673,7 +20676,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
         );
         textLeftOffset += this._getWidthOfWords(ctx, word) + spaceWidth;
       }
-      
+
     },
 
     _setSVGTextLineBg: function(textBgRects, i, textLeftOffset, textTopOffset, height) {
@@ -20801,7 +20804,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
 
     var textContent = '';
 
-    // The XML is not properly parsed in IE9 so a workaround to get 
+    // The XML is not properly parsed in IE9 so a workaround to get
     // textContent is through firstChild.data. Another workaround would be
     // to convert XML loaded from a file to be converted using DOMParser (same way loadSVGFromString() does)
     if (!('textContent' in element)) {
@@ -20815,7 +20818,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(/** @lends fabric.Imag
     }
 
     textContent = textContent.replace(/^\s+|\s+$|\n+/g, '').replace(/\s+/g, ' ');
-    
+
     var text = new fabric.Text(textContent, options),
         /*
           Adjust positioning:
